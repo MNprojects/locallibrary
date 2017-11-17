@@ -1,0 +1,39 @@
+{%extends "base_generic.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username or password was wrong, doh!</p>
+{% endif %}
+
+{% if next %}
+	{% if user.isauthenticated %}
+	<p>Access denied. Go away!</p>
+	{% else %}
+	<p>Please log in to see this page.</p>
+	{% endif %}
+{% endif %}
+
+<form method = "post" action="{% url 'login' %}">
+{% csrf_token %}
+
+<div>
+	<td>{{ form.username.label_tag }}</td>
+	<td>{{ form.username }}</td>
+</div>
+
+<div>
+	<td>{{ form.password.label_tag }}</td>
+	<td>{{ form.password }}<td>
+</div>
+
+<div>
+	<input type= "submit" value = "login" />
+	<input type= "hidden" name="next" value="{{ next }}" />
+</div>
+</form>
+
+{# Assumes the password_reset view is setup in URLconf #}
+<p><a href="{% url 'password_reset' %}">Did you forget your password??</a></p>
+
+{% endblock %}
